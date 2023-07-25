@@ -44,39 +44,28 @@ Input: 3, 2 Output: {0: (0, 0, 0), (0, 0, 0): 0, 1: (1, 0, 0), (1, 0, 0): 1, 2: 
  (1, 1, 1): 7}
 """
 
+def numberToBase(n, b):
+    if n == 0:
+        return [0]
+    digits = []
+    while n:
+        digits.append(int(n % b))
+        n //= b
+    return digits[::-1]
+
 class Solution:
     def create_action_dict(self, num_players, num_actions):
-        # type num: two integer values
-        # return type: int dictionary
-        
-        action_dict = {}
-        index = 0
-        
-        # Generate the mapping from integer keys to tuples of actions
-        for i in range(num_actions):
-            for j in range(num_actions):
-                actions_tuple = tuple([i] + [0] * (num_players - 1))  # Create a tuple with the first action as 'i' and the rest as 0
-                actions_tuple = actions_tuple[:num_players - 1] + (j,)  # Replace the last element with 'j'
-                action_dict[index] = actions_tuple
-                index += 1
-        
-        # Generate the mapping from tuples of actions to integer keys
-        for i, actions_tuple in action_dict.items():
-            action_dict[actions_tuple] = i
-        
-        return action_dict
-
-def main():
-    input1 = int(input("Enter the number of players: "))
-    input2 = int(input("Enter the number of possible actions: "))
-    
-    tc1 = Solution()
-    ans = tc1.create_action_dict(input1, input2)
-    print(ans)
-
-if __name__ == "__main__":
-    main()
-pass
+      if num_actions*num_players == 0:
+        return {0: (), (): 0}
+      enddict={}
+      tuples = num_actions ** num_players
+      for i in range(tuples):
+        ibaction=numberToBase(i, num_actions)
+        ibaction=ibaction[::-1]+(num_players-len(ibaction))*[0]
+        ibaction=tuple(ibaction)
+        enddict[i]=ibaction
+        enddict[ibaction]=i
+      return enddict
     
 def main():
     input1 = input()
@@ -89,6 +78,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
